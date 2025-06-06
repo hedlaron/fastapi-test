@@ -2,12 +2,28 @@
 
 This is a simple FastAPI project that demonstrates a basic API setup with authentication and database integration.
 
+## Project Structure
+```
+app/
+├── api/                 # API endpoints
+│   ├── endpoints/
+│   │   ├── auth.py     # Authentication endpoints
+│   │   └── products.py # Product endpoints
+├── core/               # Core functionality
+│   ├── config.py      # Application configuration
+│   └── security.py    # Security utilities
+├── db/                # Database
+│   └── models.py     # Database models
+└── main.py           # Application entry point
+```
+
 ## Features
 - REST API endpoints for products
 - JWT-based authentication
 - User registration and login
 - SQLite database with Tortoise ORM
 - Token-based protected endpoints
+- Modular project structure
 
 ## Setup
 
@@ -23,6 +39,8 @@ uv add fastapi
 uv add tortoise-orm
 uv add passlib
 uv add pyjwt
+uv add pydantic-settings
+uv add bcrypt
 uv sync
 ```
 
@@ -31,7 +49,7 @@ uv sync
 To run the application, use the following command:
 
 ```bash
-uv run fastapi dev main.py
+uv run fastapi dev app/main.py
 ```
 
 ## API Endpoints
@@ -53,7 +71,6 @@ uv run fastapi dev main.py
 
 ### User Operations
 - `GET /users/me` - Get current user info (requires authentication)
-- `GET /` - Test authentication (requires authentication)
 
 ### Products
 - `GET /products` - List all products
@@ -83,11 +100,19 @@ To access protected endpoints:
 
 The application uses SQLite with Tortoise ORM. The database file `db.sqlite3` will be automatically created when you first run the application.
 
-## Project Structure
+## Code Organization
 
-- `main.py` - Main application file containing:
-  - FastAPI routes
-  - Database models (User, Product)
-  - Authentication logic
-  - API endpoints
-  - JWT token handling
+- `app/api/endpoints/`: Contains all API route handlers
+  - `auth.py`: Authentication-related endpoints
+  - `products.py`: Product-related endpoints
+- `app/core/`: Core application functionality
+  - `config.py`: Configuration settings
+  - `security.py`: Security utilities (JWT, password hashing)
+- `app/db/`: Database-related code
+  - `models.py`: Database models and Pydantic schemas
+- `main.py`: Application entry point and configuration
+
+## API Documentation
+Once running, visit:
+- http://127.0.0.1:8000/docs - Swagger UI documentation
+- http://127.0.0.1:8000/redoc - ReDoc documentation
