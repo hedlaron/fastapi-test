@@ -5,6 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "bcrypt==4.0.1",
     "fastapi[standard]>=0.115.12",
+    "passlib>=1.7.4",
+    "pyjwt>=2.10.1",
     "tortoise-orm>=0.25.1",
 ]

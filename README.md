@@ -4,9 +4,10 @@ This is a simple FastAPI project that demonstrates a basic API setup with authen
 
 ## Features
 - REST API endpoints for products
-- User authentication with OAuth2
+- JWT-based authentication
+- User registration and login
 - SQLite database with Tortoise ORM
-- Token-based authentication
+- Token-based protected endpoints
 
 ## Setup
 
@@ -20,6 +21,8 @@ uv venv
 ```bash
 uv add fastapi
 uv add tortoise-orm
+uv add passlib
+uv add pyjwt
 uv sync
 ```
 
@@ -33,12 +36,48 @@ uv run fastapi dev main.py
 
 ## API Endpoints
 
-The API will be available at:
-- http://127.0.0.1:8000 - Root endpoint (requires authentication)
-- http://127.0.0.1:8000/token - Get authentication token
-- http://127.0.0.1:8000/products - Products CRUD endpoints
-- http://127.0.0.1:8000/docs - Swagger UI documentation (provided by FastAPI)
-- http://127.0.0.1:8000/redoc - ReDoc documentation (provided by FastAPI)
+### Authentication
+- `POST /users` - Register a new user
+  ```json
+  {
+    "username": "your_username",
+    "password": "your_password"
+  }
+  ```
+
+- `POST /token` - Login and get access token
+  ```bash
+  # Using form data
+  username=your_username&password=your_password
+  ```
+
+### User Operations
+- `GET /users/me` - Get current user info (requires authentication)
+- `GET /` - Test authentication (requires authentication)
+
+### Products
+- `GET /products` - List all products
+- `GET /products/{product_id}` - Get a specific product
+- `POST /products` - Create a new product
+  ```json
+  {
+    "id": 1,
+    "name": "Product Name",
+    "price": 99.99,
+    "date_added": "2024-01-01"
+  }
+  ```
+- `PUT /products/{product_id}` - Update a product
+
+## Authentication
+
+To access protected endpoints:
+1. First, create a user using the `/users` endpoint
+2. Get a token using the `/token` endpoint
+3. Include the token in subsequent requests:
+   ```
+   Authorization: Bearer your_token_here
+   ```
 
 ## Database
 
@@ -51,3 +90,4 @@ The application uses SQLite with Tortoise ORM. The database file `db.sqlite3` wi
   - Database models (User, Product)
   - Authentication logic
   - API endpoints
+  - JWT token handling
