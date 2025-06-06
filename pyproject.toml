@@ -1,9 +1,9 @@
 [project]
 name = "fastapi-test"
 version = "0.1.0"
-description = "Add your description here"
+description = "A FastAPI test project with authentication and products"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.9"
 dependencies = [
     "bcrypt==4.0.1",
     "fastapi[standard]>=0.115.12",
@@ -11,3 +11,9 @@ dependencies = [
     "pyjwt>=2.10.1",
     "tortoise-orm>=0.25.1",
 ]
+
+[tool.uvicorn]
+app = "app.main:app"
+host = "127.0.0.1"
+port = 8000
+reload = true

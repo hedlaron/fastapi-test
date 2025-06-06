@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from app.core.security import get_current_user
 from app.db.models import Product, User_Pydantic
 
@@ -19,7 +19,10 @@ def get_products() -> list[Product]:
 
 @router.get("/products/{product_id}")
 def get_product(product_id: int):
-    return next((product for product in products if product.id == product_id), None)
+    product = next((p for p in products if p.id == product_id), None)
+    if not product:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+    return product
 
 @router.post("/products")
 async def create_product(product: Product, user: User_Pydantic = Depends(get_current_user)):
@@ -27,5 +30,9 @@ async def create_product(product: Product, user: User_Pydantic = Depends(get_cur
     return product
 
 @router.put("/products/{product_id}")
-async def update_product(product_id: int, product: Product, user: User_Pydantic = Depends(get_current_user)):
-    return next((product for product in products if product.id == product_id), None) 
+async def update_product(product_id: int, updated_product: Product, user: User_Pydantic = Depends(get_current_user)):
+    for i, product in enumerate(products):
+        if product.id == product_id:
+            products[i] = updated_product
+            return updated_product
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found") 
