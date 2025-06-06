@@ -58,7 +58,7 @@ uv run fastapi dev main.py
 ### Products
 - `GET /products` - List all products
 - `GET /products/{product_id}` - Get a specific product
-- `POST /products` - Create a new product
+- `POST /products` - Create a new product (requires authentication)
   ```json
   {
     "id": 1,
@@ -67,7 +67,7 @@ uv run fastapi dev main.py
     "date_added": "2024-01-01"
   }
   ```
-- `PUT /products/{product_id}` - Update a product
+- `PUT /products/{product_id}` - Update a product (requires authentication)
 
 ## Authentication
 

@@ -103,12 +103,12 @@ def get_product(product_id: int):
     return next((product for product in products if product["id"] == product_id), None)
 
 @app.post("/products")
-def create_product(product: Product):
+async def create_product(product: Product, user: User_Pydantic = Depends(get_current_user)):
     products.append(product)
     return product
 
 @app.put("/products/{product_id}")
-def update_product(product_id: int, product: Product):
+async def update_product(product_id: int, product: Product, user: User_Pydantic = Depends(get_current_user)):
     return next((product for product in products if product["id"] == product_id), None)
 
 # Register Tortoise ORM
